@@ -154,6 +154,7 @@ def main():
     pairs = [((L, "esnn"), (L, m)) for m in ("rf", "catboost")]
     pairs += [((L, "encoded_ann"), (L, m)) for m in ("ann", "rf", "catboost", "xgb")]
     pairs += [((L, "xgb"), (L, m)) for m in ("rf", "catboost")]
+    pairs += [((L, "ple_ensemble"), (L, m)) for m in ("esnn", "encoded_ann", "ple_mlp", "ann", "xgb")]
     for T in ("T4", "T8"):
         pairs += [((T, "esnn"), (L, "esnn")), ((T, "encoded_ann"), (L, "encoded_ann")), ((T, "esnn"), (T, "encoded_ann")),
                   ((T, "esnn"), (L, "ann")), ((T, "esnn"), (L, "xgb"))]

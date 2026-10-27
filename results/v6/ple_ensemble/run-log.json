@@ -1,0 +1,22 @@
+{
+  "parent": "/kaggle/input/notebooks/ozgurucar/notebookeb0d7e9071/ids2018-v3/experiments/group_ce",
+  "runs": {
+    "ple_ensemble_T4": {
+      "change": {
+        "models": [
+          "ple_ensemble"
+        ],
+        "seeds": [
+          42,
+          43,
+          44,
+          45,
+          46
+        ],
+        "steps": 4
+      },
+      "experiment_id": "dbbd82ff6c82dcb2fc82126c9ab40596f5bbaaad62f55d05948c49ecd958d21c",
+      "seconds": 2390.340398788452
+    }
+  }
+}
