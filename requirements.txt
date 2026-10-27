@@ -1,0 +1,13 @@
+# Compatibility ranges. Record the exact Kaggle resolution before real experiments.
+# Each prepared experiment and trained model saves installed package versions.
+numpy>=2.0,<3
+pandas>=2.2,<4
+scipy>=1.13,<2
+scikit-learn>=1.6,<2
+torch>=2.6,<3
+snntorch==1.0.0
+xgboost>=2.1,<4
+matplotlib>=3.9,<4
+joblib>=1.4,<2
+pytest>=8,<10
+catboost>=1.2,<2
