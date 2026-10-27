@@ -16,8 +16,9 @@ The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https:
 | XGBoost | 0.808 ± 0.004 | 0.858 ± 0.001 | 0.967 |
 
 - Only the E-SNN–XGBoost difference is significant: −4.2 points (95% CI [−5.6, −2.8], Holm p = 0.002). Source: `results/analysis/seed_stats_5seed_table.md`.
-- At 5% FAR the E-SNN is within 2 points of the PLE-MLP (TOST p = 0.020), so spiking dynamics give no accuracy gain here. The non-spiking Enc-ANN has the highest mean macro-F1 among the neural models, but not significantly above the E-SNN (Holm p = 0.51).
-- The PLE ensemble (fusion head, no spike codes) is 1.0 points above the PLE-MLP and 0.8 below Enc-ANN (95% CI [−3.4, 1.7]); none of its differences from the neural models is significant (exploratory, unadjusted). The fusion head closes about half of Enc-ANN's lead over the PLE-MLP, so there is no evidence that the spike codes matter beyond the fusion head.
+- At 5% FAR the E-SNN is within 2 points of the PLE-MLP (TOST p = 0.020), so we find no evidence that spiking dynamics add accuracy here. The non-spiking Enc-ANN has the highest mean macro-F1 among the neural models, but not significantly above the E-SNN (Holm p = 0.51).
+- The PLE ensemble (Enc-ANN's fusion head, but the same piecewise-linear code in all three branches, 24 units each) is 1.0 points above the PLE-MLP (p = 0.19) and 0.8 below Enc-ANN (95% CI [−3.4, 1.7]); none of its differences from the neural models is significant (exploratory, unadjusted), and equivalence to Enc-ANN was not tested. The point estimates are consistent with fusion/ensembling accounting for about half of Enc-ANN's lead over the PLE-MLP, but neither step is individually significant, so there is no evidence that the spike codes matter beyond fusion/ensembling.
+- The neural ranking rests largely on Web Attacks (179 test flows; F1 0.151 MLP, 0.174 PLE-MLP, 0.277 PLE ensemble, 0.337 Enc-ANN) and on the unidentifiable FTP-BruteForce class (`results/analysis/per_class_5seed_table.md`).
 - Intervals cover seed variance, not a redrawn split. A bootstrap over test fingerprint groups adds about ±0.5 points of detection rate, and no paired difference in detection rate or AUC changes sign (`results/analysis/group_bootstrap_table.md`).
 - The three-seed T = 12 run, which also includes random forest and CatBoost, is in `results/v3/experiments/group_ce/summary.json` (bottom block of Table II in the paper).
 - T = 4 matches T = 12 in accuracy with 2.9× fewer synaptic events. With published Loihi per-operation costs, though, the E-SNN needs 3.1–9.0 µJ per flow. That is 2.5–7.2× the MLP when its SRAM weight reads are counted (1.24 µJ; 0.40 µJ for arithmetic alone). See `results/analysis/energy_unified_table.md`.
@@ -47,7 +48,7 @@ The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https:
 ```bash
 python -m venv .venv && . .venv/bin/activate      # keep it outside iCloud-synced folders
 pip install -r requirements.txt pytest
-python -m pytest -q tests                          # 44 tests
+python -m pytest -q tests                          # 45 tests
 python -m idsresearch smoke --out /tmp/smoke       # pipeline on synthetic data
 ```
 
@@ -59,9 +60,10 @@ These commands regenerate the analyses from the committed run records:
 
 | Paper item | Command | Output |
 |---|---|---|
-| Table II (5-seed statistics, TOST) | `python scripts/analysis/seed_stats.py --no-defaults --summary T4=results/v5/seeds/summary.json --primary-label T4 --out seed_stats_5seed` | `results/analysis/seed_stats_5seed_table.md` |
+| Table II (5-seed statistics, TOST; v5 and v6) | `python scripts/analysis/seed_stats.py --no-defaults --summary T4=results/v5/seeds/summary.json --summary T4=results/v6/ple_ensemble/summary.json --primary-label T4 --out seed_stats_5seed` | `results/analysis/seed_stats_5seed_table.md` |
+| Table III (5-seed per-class F1; v5 and v6) | `python scripts/analysis/per_class.py per_class_5seed results/v5/seeds/summary.json results/v6/ple_ensemble/summary.json` | `results/analysis/per_class_5seed_table.md` |
 | Three-seed statistics (T = 12) | `python scripts/analysis/seed_stats.py` | `results/analysis/seed_stats_table.md` |
-| 11-class macro-F1, per-class F1 (Tables II, III) | `python scripts/analysis/identifiable_macro_f1.py` | `results/analysis/identifiable_macro_f1_table.md` |
+| 11-class macro-F1, three-seed per-class F1 (T = 12) | `python scripts/analysis/identifiable_macro_f1.py` | `results/analysis/identifiable_macro_f1_table.md` |
 | Per-day FAR, argmax point, calibration effect | `python scripts/analysis/operating_context.py` | `results/analysis/operating_context_table.md` |
 | Adaptation summary (Table VI) | `python scripts/analysis/adapt_summary.py` | `results/analysis/adapt_label_budget_table.md` |
 | Energy, demo sample only | `python scripts/analysis/energy_unified.py --skip-test-mix` | `results/analysis/energy_unified_table.md` (demo rows) |
@@ -76,10 +78,10 @@ These need data or checkpoints that are not in git:
 | Transfer (Table V), KS shift, name map | `scripts/cross_dataset_cic2017.py`, `scripts/analysis/transfer_hygiene.py` | `~/.cache/ids-x17/combine.csv` (MachineLearningCVE files concatenated), plus the raw 2018 days above | Kaggle dataset `sweety18/cicids2017-full-dataset` |
 | Adaptation (Table VI) | `scripts/finetune_cic2017.py`, `scripts/analysis/adapt_label_budget.py` | `combine.csv` above | as above |
 | Dst Port ablation, transfer half | `scripts/analysis/noport.py` | no-port checkpoints in `~/.cache/ids-v5/noport/`, T = 4 Enc-ANN checkpoint in `~/.cache/ids-v4/steps/` | Kaggle kernel outputs (on request, see below) |
-| Group bootstrap over test groups (`results/analysis/group_bootstrap_table.md`) | `scripts/analysis/group_bootstrap.py` | per-row test scores (`test_log_odds.npy`), `test_y.npy`, `test_groups.npy` | Kaggle kernel output of the five-seed run; excluded by `.gitignore` because of size (on request, see below) |
+| Group bootstrap over test groups (`results/analysis/group_bootstrap_table.md`) | `scripts/analysis/group_bootstrap.py` | per-row test scores (`test_log_odds.npy`), `test_y.npy`, `test_groups.npy` | Private Kaggle kernel output of the five-seed run; excluded by `.gitignore` because of size; available from the author on request |
 | Operation counts from checkpoints | `scripts/profile_all_steps.py` | v3/v4 checkpoints in the Kaggle working-directory layout | Kaggle kernel outputs of the v3 and v4 runs (on request) |
 
-`app/models/` holds only the seed-42 checkpoints: E-SNN at T = 12 and T = 4 and XGBoost, plus the T = 12 matched MLP and Enc-ANN in `profile/`. The other seeds, the PLE-MLP, the PLE ensemble and the no-port models exist only as Kaggle kernel outputs. They are available from the author on request and will be released with the camera-ready version.
+`app/models/` holds only the seed-42 checkpoints: E-SNN at T = 12 and T = 4 and XGBoost, plus the T = 12 matched MLP and Enc-ANN in `profile/`. The other seeds, the PLE-MLP, the PLE ensemble and the no-port models exist only as Kaggle kernel outputs. They, and the per-row test scores used for the group bootstrap, are in private Kaggle outputs, available from the author on request, and will be released with the camera-ready version.
 
 ## Run the detector
 
