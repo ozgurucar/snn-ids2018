@@ -2,7 +2,7 @@
 
 This repository compares a three-branch ensemble spiking network (E-SNN) on CSE-CIC-IDS2018 flows with five baselines: a parameter-matched MLP, the same MLP on a spike-free piecewise-linear encoding (PLE-MLP), three PLE-MLPs under the E-SNN's fusion head (PLE ensemble), a spike-input control (Enc-ANN, which feeds the SNN's spike codes to a non-spiking network) and tree ensembles. Rows with identical cleaned feature vectors stay in one partition. Calibration, threshold selection and testing each get their own partition, and all models are compared at the same benign false-alarm rate (FAR).
 
-The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https://github.com/ozgurucar/snn-ids2018; the code and records the paper reports are in the commit tagged `v1.0`.
+The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https://github.com/ozgurucar/snn-ids2018; the code and records the paper reports are in the commit tagged `v1.1`.
 
 ## Main result (5% FAR, T = 4, five seeds 42–46, `results/v5/seeds/summary.json` and `results/v6/ple_ensemble/summary.json`)
 
@@ -78,10 +78,10 @@ These need data or checkpoints that are not in git:
 | Transfer (Table V), KS shift, name map | `scripts/cross_dataset_cic2017.py`, `scripts/analysis/transfer_hygiene.py` | `~/.cache/ids-x17/combine.csv` (MachineLearningCVE files concatenated), plus the raw 2018 days above | Kaggle dataset `sweety18/cicids2017-full-dataset` |
 | Adaptation (Table VI) | `scripts/finetune_cic2017.py`, `scripts/analysis/adapt_label_budget.py` | `combine.csv` above | as above |
 | Dst Port ablation, transfer half | `scripts/analysis/noport.py` | no-port checkpoints in `~/.cache/ids-v5/noport/`, T = 4 Enc-ANN checkpoint in `~/.cache/ids-v4/steps/` | Kaggle kernel outputs (on request, see below) |
-| Group bootstrap over test groups (`results/analysis/group_bootstrap_table.md`) | `scripts/analysis/group_bootstrap.py` | per-row test scores (`test_log_odds.npy`), `test_y.npy`, `test_groups.npy` | Private Kaggle kernel output of the five-seed run; excluded by `.gitignore` because of size; available from the author on request |
+| Group bootstrap over test groups (`results/analysis/group_bootstrap_table.md`) | `scripts/analysis/group_bootstrap.py` | per-row test scores (`test_log_odds.npy`), `test_y.npy`, `test_groups.npy` | Private Kaggle kernel output of the five-seed run; excluded by `.gitignore` because of size; available from the authors on request |
 | Operation counts from checkpoints | `scripts/profile_all_steps.py` | v3/v4 checkpoints in the Kaggle working-directory layout | Kaggle kernel outputs of the v3 and v4 runs (on request) |
 
-`app/models/` holds only the seed-42 checkpoints: E-SNN at T = 12 and T = 4 and XGBoost, plus the T = 12 matched MLP and Enc-ANN in `profile/`. The other seeds, the PLE-MLP, the PLE ensemble and the no-port models exist only as Kaggle kernel outputs. They, and the per-row test scores used for the group bootstrap, are in private Kaggle outputs, available from the author on request, and will be released with the camera-ready version.
+`app/models/` holds only the seed-42 checkpoints: E-SNN at T = 12 and T = 4 and XGBoost, plus the T = 12 matched MLP and Enc-ANN in `profile/`. The other seeds, the PLE-MLP, the PLE ensemble and the no-port models exist only as Kaggle kernel outputs. They, and the per-row test scores used for the group bootstrap, are in private Kaggle outputs, available from the authors on request, and will be released with the camera-ready version.
 
 ## Run the detector
 
