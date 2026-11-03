@@ -11,6 +11,8 @@ zip -q dist/ids2018-esnn-overleaf.zip main.tex references.bib figures/*.pdf
 ${PANDOC:-pandoc} main.tex --citeproc --bibliography=references.bib \
   -M author="Özgür Uçar, Dokuz Eylul University, Turkey (ucar.ozgur@outlook.com)" \
   -M author="Semih Utku, Dokuz Eylul University, Turkey" \
+  -M author="Pablo Sorrentino, University of Groningen, Netherlands" \
+  -M author="Amir Javadpour, MOSA!C Lab / ICTFICIAL Oy, Finland" \
   -M author="Fatih Turkmen, University of Groningen, Netherlands" \
   -o dist/ids2018-esnn-paper.docx
 echo "Built: $(ls dist)"

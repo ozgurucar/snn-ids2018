@@ -13,9 +13,12 @@
 \title{Do Spiking Networks Help Flow-Based Intrusion Detection? A Duplicate-Controlled Comparison on CSE-CIC-IDS2018}
 
 \author{\IEEEauthorblockN{\"Ozg\"ur U\c{c}ar\IEEEauthorrefmark{1},
-Semih Utku\IEEEauthorrefmark{1} and
+Semih Utku\IEEEauthorrefmark{1},
+Pablo Sorrentino\IEEEauthorrefmark{2},
+Amir Javadpour\IEEEauthorrefmark{3} and
 Fatih Turkmen\IEEEauthorrefmark{2}}
 \IEEEauthorblockA{\IEEEauthorrefmark{1}Dokuz Eylul University, Turkey \quad \IEEEauthorrefmark{2}University of Groningen, Netherlands\\
+\IEEEauthorrefmark{3}MOSA!C Lab / ICTFICIAL Oy, Finland\\
 Corresponding author: ucar.ozgur@outlook.com}}
 
 \maketitle
@@ -325,13 +328,9 @@ With 1{,}101 labelled flows, fine-tuning the 4-step E-SNN from its 2018 checkpoi
 
 On CSE-CIC-IDS2018 under a duplicate-controlled protocol with matched false-alarm rates, an ensemble SNN detects 96\% of attack flows at a 5\% FAR. Across five seeds it does not differ significantly from a parameter-matched MLP, from piecewise-linear MLPs with or without fusion/ensembling, or from a non-spiking network fed its spike codes, while XGBoost is about 4 macro-F1 points ahead (Holm $p = 0.002$). Four time steps instead of 12 cut its synaptic events 2.9-fold at no measurable cost, yet on published Loihi figures it still needs more energy per flow than the MLP. Much of the remaining error comes from identical vectors with different labels, and no model keeps its accuracy on CIC-IDS2017 without local labels.
 
-\section*{Acknowledgment}
-
-We thank Pablo Sorrentino and Amir Javadpour for their support and their comments on an earlier version.
-
 \section*{Reproducibility}
 
-Code, configuration, records and seed-42 checkpoints (E-SNN at $T{=}4$ and 12, Enc-ANN at $T{=}12$, MLP, XGBoost) are at \url{https://github.com/ozgurucar/snn-ids2018} (commit tagged \texttt{v1.2}). Other checkpoints and the per-row test scores used for the bootstrap are available from the authors on request. Package versions are pinned in the records.
+Code, configuration, records and seed-42 checkpoints (E-SNN at $T{=}4$ and 12, Enc-ANN at $T{=}12$, MLP, XGBoost) are at \url{https://github.com/ozgurucar/snn-ids2018} (commit tagged \texttt{v1.3}). Other checkpoints and the per-row test scores used for the bootstrap are available from the authors on request. Package versions are pinned in the records.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

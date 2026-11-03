@@ -2,7 +2,7 @@
 
 This repository compares a three-branch ensemble spiking network (E-SNN) on CSE-CIC-IDS2018 flows with five baselines: a parameter-matched MLP, the same MLP on a spike-free piecewise-linear encoding (PLE-MLP), three PLE-MLPs under the E-SNN's fusion head (PLE ensemble), a spike-input control (Enc-ANN, which feeds the SNN's spike codes to a non-spiking network) and tree ensembles. Rows with identical cleaned feature vectors stay in one partition. Calibration, threshold selection and testing each get their own partition, and all models are compared at the same benign false-alarm rate (FAR).
 
-The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https://github.com/ozgurucar/snn-ids2018; the code and records the paper reports are in the commit tagged `v1.2`.
+The paper source is `paper/main.tex` (PDF: `paper/main.pdf`). Repository: https://github.com/ozgurucar/snn-ids2018; the code and records the paper reports are in the commit tagged `v1.3`.
 
 ## Main result (5% FAR, T = 4, five seeds 42–46, `results/v5/seeds/summary.json` and `results/v6/ple_ensemble/summary.json`)
 
