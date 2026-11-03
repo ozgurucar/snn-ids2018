@@ -9,7 +9,7 @@ rm -f dist/ids2018-esnn-overleaf.zip
 zip -q dist/ids2018-esnn-overleaf.zip main.tex references.bib figures/*.pdf
 # pandoc does not read IEEEtran author blocks, so the authors are passed as metadata.
 ${PANDOC:-pandoc} main.tex --citeproc --bibliography=references.bib \
-  -M author="Özgür Uçar, Dokuz Eylul University, Turkey (ucar.ozgur@outlook.com)" \
+  -M author="Özgür Uçar, Dokuz Eylul University, Turkey" \
   -M author="Semih Utku, Dokuz Eylul University, Turkey" \
   -M author="Pablo Sorrentino, University of Groningen, Netherlands" \
   -M author="Amir Javadpour, MOSA!C Lab / ICTFICIAL Oy, Finland" \
